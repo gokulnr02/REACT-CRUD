@@ -94,7 +94,7 @@ console.log(e,'e')
     })
 
     const TableSelect = async (val) => {
-        const url = 'http://127.0.0.1:5001/CountrySelect';
+        const url = 'http://127.0.0.1:5001/CitySelect';
         const payLoad = {
             "index": val.pageIndex,
             "count": val.pageDropDown,
@@ -104,6 +104,8 @@ console.log(e,'e')
         if (response.Output.status.code == 200) {
             if (val.type == 'CountrySelect') {
                 setCountrList(response.Output.data)
+            }else{
+                setTableData(response.Output.data)
             }
         }
     }
