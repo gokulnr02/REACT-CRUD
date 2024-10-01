@@ -60,8 +60,8 @@ const Dropdown = memo((props)=>{
                         <tbody>
                            {props.data && props.data.length>0 && props.data.map((val)=>{
                             return(<tr className="dropdownRow" onClick={()=>{props.onClick(val);setDropdownVisible(false)}}>
-                                <td className="dropdownValues">{val.CountryCode}</td>
-                                <td className="dropdownValues">{val.CountryName}</td>
+                                <td className="dropdownValues">{val[props.grid[0]]}</td>
+                                <td className="dropdownValues">{val[props.grid[1]]}</td>
                             </tr>)})}
                         </tbody>
                     </table>
