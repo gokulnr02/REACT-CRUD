@@ -6,10 +6,12 @@ import { useCallback, useState, useReducer, useEffect } from "react";
 import CommonSelectAPI from "../helpercomponents/CommonSelect";
 export default function Location() {
     const [countryList, setCountrList] = useState([]);
+    const [CityList, setCityList] = useState([]);
     const [TableData, setTableData] = useState([]);
     const iniitalState = {
         CityID: 0,
         CityCode: '',
+        CityMID:'',
         CityName: '',
         CountryCode: '',
         CountryName: '',
@@ -37,6 +39,8 @@ export default function Location() {
                 return { ...state, CityCode: action.payload }
             case 'CityName':
                 return { ...state, CityName: action.payload }
+            case 'CityMID':
+                 return { ...state, CityMID: action.payload }
             case 'CountryMID':
                 return { ...state, CountryMID: action.payload }
             case 'LocationCode':
@@ -88,7 +92,7 @@ console.log(e,'e')
         }
     })
     const SaveFunction = useCallback(async () => {
-        const url = 'http://127.0.0.1:5001/CitySave';
+        const url = 'http://127.0.0.1:5001/LocationSave';
         const payLoad = {
             LocationID: 0,
             LocationCode:  state.LocationCode,
@@ -108,16 +112,19 @@ console.log(e,'e')
     })
 
     const TableSelect = async (val) => {
-        const url = 'http://127.0.0.1:5001/CitySelect';
+        const url = 'http://127.0.0.1:5001/LocationSelect';
         const payLoad = {
+            "CountryMID":state.CountryMID,
             "index": val.pageIndex,
             "count": val.pageDropDown,
-            "Select_Type": val.type ? val.type : null
+            "type": val.type ? val.type : null
         }
         const response = await CommonSelectAPI({ url, payLoad })
         if (response.Output.status.code == 200) {
             if (val.type == 'CountrySelect') {
                 setCountrList(response.Output.data)
+            }else if(val.type == 'CitySelect'){
+                setCityList(response.Output.data)
             }else{
                 setTableData(response.Output.data)
             }
@@ -149,17 +156,6 @@ console.log(e,'e')
                         value={state.LocationName} />
 
                     <Dropdown
-                        labelName="City Name"
-                        order={3}
-                        onChange={(val) => val ? TableSelect({ type: 'CitySelect' }) : ''}
-                        data={countryList}
-                        grid={['CityCode', 'CityName']}
-                        value={state.CityName}
-                        name={'CityName'}
-                        onClick={(val) => { storeDispatch({ ...val, type: 'CitySelect' }) }}
-                    />
-
-                    <Dropdown
                         labelName="Country Name"
                         order={3}
                         onChange={(val) => val ? TableSelect({ type: 'CountrySelect' }) : ''}
@@ -168,6 +164,17 @@ console.log(e,'e')
                         value={state.CountryName}
                         name={'CountryName'}
                         onClick={(val) => { storeDispatch({ ...val, type: 'CountrySelect' }) }}
+                    />
+
+                    <Dropdown
+                        labelName="City Name"
+                        order={3}
+                        onChange={(val) => val ? TableSelect({ type: 'CitySelect' }) : ''}
+                        data={CityList}
+                        grid={['CityCode', 'CityName']}
+                        value={state.CityName}
+                        name={'CityName'}
+                        onClick={(val) => { storeDispatch({ ...val, type: 'CitySelect' }) }}
                     />
 
                 </div>
