@@ -3,7 +3,7 @@ import { HiArrowCircleRight,HiArrowCircleLeft } from "react-icons/hi";
 
 
 export default function DynamicTable(props) {
-    console.log(props,'props')
+
     const igoreColoums = ['ID', 'id', 'Total', 'total', 'Date', '_id', '__v']
     const grid = props.tableData.length >0 ? Object.keys(props.tableData[0]).filter((val) => !igoreColoums.some(ignore => val.includes(ignore))):[]
     
